@@ -75,3 +75,36 @@ function makeOne() {
 if (typeof module !== 'undefined') {
   module.exports = { checkCollisions, update, pacMen };
 }
+
+let gameRunning = false;
+let animationFrame = 0; // 控制嘴巴开合动画
+
+function update() {
+  pacMen.forEach((item) => {
+    checkCollisions(item);
+
+    item.position.x += item.velocity.x;
+    item.position.y += item.velocity.y;
+
+    if (item.velocity.x > 0) {
+      item.newimg.src = animationFrame % 2 === 0 ? './images/PacMan1.png' : './images/PacMan2.png';
+    } else {
+      item.newimg.src = animationFrame % 2 === 0 ? './images/PacMan3.png' : './images/PacMan4.png';
+    }
+
+
+    item.newimg.style.left = item.position.x + 'px';
+    item.newimg.style.top = item.position.y + 'px';
+  });
+
+  animationFrame++;
+
+  setTimeout(update, 100); 
+}
+
+function startGame() {
+  if (!gameRunning) {
+    gameRunning = true;
+    update();
+  }
+}
